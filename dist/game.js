@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createInitGame = exports.InitGame = void 0;
+exports.InitGame = void 0;
 const uniqid_1 = __importDefault(require("uniqid"));
 class InitGame {
     constructor(gameRoomName, maxPlayers) {
@@ -23,11 +23,3 @@ class InitGame {
     }
 }
 exports.InitGame = InitGame;
-function createInitGame(gameRoomName) {
-    if (gameRoomName === "tic-tac-toe") {
-        return new TicTacToe(gameRoomName, 2);
-    }
-    return new TicTacToe(gameRoomName, 2);
-}
-exports.createInitGame = createInitGame;
-// TODO: play again functionallity

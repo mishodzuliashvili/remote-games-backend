@@ -1,7 +1,10 @@
 import _ from "lodash";
-import { InitGame } from "../game";
+import { InitGame } from "./game";
 
 export class TicTacToe extends InitGame {
+  constructor(gameRoomName: string, maxPlayers: number) {
+    super(gameRoomName, maxPlayers);
+  }
   setFirstPlayer() {
     this.currentPlayerID = _.sample(this.playerIDs) || "";
   }

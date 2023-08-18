@@ -40,12 +40,3 @@ export abstract class InitGame {
 
   abstract isMoveValid(move: any): boolean;
 }
-
-export function createInitGame(gameRoomName: string) {
-  if (gameRoomName === "tic-tac-toe") {
-    return new TicTacToe(gameRoomName, 2);
-  }
-  return new TicTacToe(gameRoomName, 2);
-}
-
-// TODO: play again functionallity

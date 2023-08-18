@@ -1,4 +1,3 @@
-import uniqID from "uniqid";
 import { createInitGame } from "./games";
 
 const rooms: Map<string, GameRoom> = new Map();
