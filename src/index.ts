@@ -1,6 +1,7 @@
 import Websocket from "./websocket";
 import _ from "lodash";
 import { Socket } from "socket.io";
+
 import {
   sendGameToRoom,
   sendMessageToClient,
@@ -27,7 +28,7 @@ io.on("connection", (socket: Socket) => {
   });
 
   socket.on("leave-playground", () => {
-    removePlayer(playerID);
+    // removePlayer(playerID);
     sendMessageToClient(socket, `👋 Goodbye!`);
   });
 
@@ -47,22 +48,27 @@ io.on("connection", (socket: Socket) => {
 
   socket.on("leave-game-room", () => {
     const playerGameRoom = getPlayerGameRoom(playerID);
+    if (!playerGameRoom) return;
     socket.leave(playerGameRoom.id);
     sendMessageToClient(socket, `👋 Goodbye!`);
+    const player = getPlayer(playerID);
     sendMessageToGameRoom(
       io,
       playerGameRoom,
-      `${getPlayer(playerID).name} left the game room`,
+      `${player && player.name} left the game room`,
       "info"
     );
+
     playerGameRoom.playerIDs = _.without(playerGameRoom.playerIDs, playerID);
     playerGameRoom.status = "loading";
+    playerGameRoom.currentPlayerID = "";
+    playerGameRoom.winnerID = "";
     sendGameToRoom(io, playerGameRoom);
   });
 
   socket.on("make-move", ({ move }: any) => {
     const playerGameRoom = getPlayerGameRoom(playerID);
-    if (playerGameRoom.currentPlayerID !== playerID) {
+    if (playerGameRoom?.currentPlayerID !== playerID) {
       sendMessageToClient(socket, `👋 It's not your turn!`);
       return;
     }
@@ -81,13 +87,13 @@ io.on("connection", (socket: Socket) => {
       sendMessageToGameRoom(
         io,
         playerGameRoom,
-        `${getPlayer(playerID).name} left the game room`,
+        `${getPlayer(playerID)?.name} left the game room`,
         "info"
       );
       playerGameRoom.playerIDs = _.without(playerGameRoom.playerIDs, playerID);
       playerGameRoom.status = "loading";
       sendGameToRoom(io, playerGameRoom);
     }
-    removePlayer(playerID);
+    // removePlayer(playerID);
   });
 });

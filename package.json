@@ -18,6 +18,7 @@
     "dotenv": "^16.3.1",
     "lodash": "^4.17.21",
     "socket.io": "^4.7.2",
+    "tictactoe-board": "^1.2.2",
     "uniqid": "^5.4.0",
     "uuid": "^9.0.0"
   },

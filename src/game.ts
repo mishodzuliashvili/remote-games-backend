@@ -34,7 +34,7 @@ export abstract class InitGame {
 
   abstract isGameEnded(): boolean;
 
-  abstract getWinner(): string;
+  abstract getWinner(): string | null;
 
   abstract makeMove(move: any): void;
 

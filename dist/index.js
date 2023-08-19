@@ -17,7 +17,7 @@ io.on("connection", (socket) => {
         (0, sendToClient_1.sendMessageToClient)(socket, `👋 Welcome ${playerName}!`);
     });
     socket.on("leave-playground", () => {
-        (0, players_1.removePlayer)(playerID);
+        // removePlayer(playerID);
         (0, sendToClient_1.sendMessageToClient)(socket, `👋 Goodbye!`);
     });
     socket.on("join-game-room", ({ gameRoomName }) => {
@@ -35,16 +35,21 @@ io.on("connection", (socket) => {
     });
     socket.on("leave-game-room", () => {
         const playerGameRoom = (0, players_1.getPlayerGameRoom)(playerID);
+        if (!playerGameRoom)
+            return;
         socket.leave(playerGameRoom.id);
         (0, sendToClient_1.sendMessageToClient)(socket, `👋 Goodbye!`);
-        (0, sendToClient_1.sendMessageToGameRoom)(io, playerGameRoom, `${(0, players_1.getPlayer)(playerID).name} left the game room`, "info");
+        const player = (0, players_1.getPlayer)(playerID);
+        (0, sendToClient_1.sendMessageToGameRoom)(io, playerGameRoom, `${player && player.name} left the game room`, "info");
         playerGameRoom.playerIDs = lodash_1.default.without(playerGameRoom.playerIDs, playerID);
         playerGameRoom.status = "loading";
+        playerGameRoom.currentPlayerID = "";
+        playerGameRoom.winnerID = "";
         (0, sendToClient_1.sendGameToRoom)(io, playerGameRoom);
     });
     socket.on("make-move", ({ move }) => {
         const playerGameRoom = (0, players_1.getPlayerGameRoom)(playerID);
-        if (playerGameRoom.currentPlayerID !== playerID) {
+        if ((playerGameRoom === null || playerGameRoom === void 0 ? void 0 : playerGameRoom.currentPlayerID) !== playerID) {
             (0, sendToClient_1.sendMessageToClient)(socket, `👋 It's not your turn!`);
             return;
         }
@@ -56,14 +61,15 @@ io.on("connection", (socket) => {
         (0, sendToClient_1.sendGameToRoom)(io, playerGameRoom);
     });
     socket.on("disconnect", () => {
+        var _a;
         const playerGameRoom = (0, players_1.getPlayerGameRoom)(playerID);
         if (playerGameRoom) {
             const playerGameRoom = (0, players_1.getPlayerGameRoom)(playerID);
-            (0, sendToClient_1.sendMessageToGameRoom)(io, playerGameRoom, `${(0, players_1.getPlayer)(playerID).name} left the game room`, "info");
+            (0, sendToClient_1.sendMessageToGameRoom)(io, playerGameRoom, `${(_a = (0, players_1.getPlayer)(playerID)) === null || _a === void 0 ? void 0 : _a.name} left the game room`, "info");
             playerGameRoom.playerIDs = lodash_1.default.without(playerGameRoom.playerIDs, playerID);
             playerGameRoom.status = "loading";
             (0, sendToClient_1.sendGameToRoom)(io, playerGameRoom);
         }
-        (0, players_1.removePlayer)(playerID);
+        // removePlayer(playerID);
     });
 });

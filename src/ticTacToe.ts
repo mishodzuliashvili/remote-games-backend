@@ -10,7 +10,6 @@ export class TicTacToe extends InitGame {
   }
 
   initGame() {
-    // set tic-tac-toe board
     const board = [
       [null, null, null],
       [null, null, null],
@@ -22,13 +21,10 @@ export class TicTacToe extends InitGame {
     };
   }
   isGameEnded() {
-    // game is ended if somone won
     return this.getWinner() !== null;
   }
   getWinner() {
-    // get winner in
     const { board } = this.data;
-    // Check rows, columns, and diagonals for a winner
     for (let i = 0; i < 3; i++) {
       if (
         board[i][0] !== null &&
@@ -59,7 +55,6 @@ export class TicTacToe extends InitGame {
     ) {
       return board[0][2];
     }
-    // Check if the board is full (draw)
     if (board.flat().every((cell: any) => cell !== null)) {
       return "draw";
     }
@@ -67,19 +62,14 @@ export class TicTacToe extends InitGame {
   }
   isMoveValid(move: any): boolean {
     const { row, col } = move;
-    // Check if the cell is empty
     return this.data.board[row][col] === null;
   }
   makeMove(move: any) {
     const { row, col } = move;
     const currentPlayerSymbol =
       this.currentPlayerID === this.playerIDs[0] ? "X" : "O";
-
-    // Check if the cell is empty before making a move
     if (this.data.board[row][col] === null) {
       this.data.board[row][col] = currentPlayerSymbol;
-
-      // Check if the game has ended after the move
       if (this.isGameEnded()) {
         if (this.getWinner() === "draw") {
           this.winnerID = "";
@@ -88,7 +78,6 @@ export class TicTacToe extends InitGame {
         }
         this.status = "ended";
       }
-      // Switch to the next player
       this.currentPlayerID =
         this.currentPlayerID === this.playerIDs[0]
           ? this.playerIDs[1]

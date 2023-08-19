@@ -1,5 +1,3 @@
-// import { getAllRooms } from "./rooms";
-import uniqid from "uniqid";
 import { getAllGameRooms } from "./rooms";
 
 const players: Map<string, Player> = new Map();
@@ -25,9 +23,11 @@ export function getPlayer(playerID: string): Player {
 }
 
 export function getGameRoomPlayers(gameRoom: GameRoom): Player[] {
-  return gameRoom.playerIDs.map((playerID) => {
-    return players.get(playerID) as Player;
-  });
+  return (
+    gameRoom.playerIDs.map((playerID) => {
+      return players.get(playerID) || { id: playerID, name: "Unknown" };
+    }) || []
+  );
 }
 
 export function getPlayerGameRoom(playerID: string): GameRoom {

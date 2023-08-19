@@ -14,7 +14,6 @@ class TicTacToe extends game_1.InitGame {
         this.currentPlayerID = lodash_1.default.sample(this.playerIDs) || "";
     }
     initGame() {
-        // set tic-tac-toe board
         const board = [
             [null, null, null],
             [null, null, null],
@@ -25,13 +24,10 @@ class TicTacToe extends game_1.InitGame {
         };
     }
     isGameEnded() {
-        // game is ended if somone won
         return this.getWinner() !== null;
     }
     getWinner() {
-        // get winner in
         const { board } = this.data;
-        // Check rows, columns, and diagonals for a winner
         for (let i = 0; i < 3; i++) {
             if (board[i][0] !== null &&
                 board[i][0] === board[i][1] &&
@@ -54,7 +50,6 @@ class TicTacToe extends game_1.InitGame {
             board[1][1] === board[2][0]) {
             return board[0][2];
         }
-        // Check if the board is full (draw)
         if (board.flat().every((cell) => cell !== null)) {
             return "draw";
         }
@@ -62,16 +57,13 @@ class TicTacToe extends game_1.InitGame {
     }
     isMoveValid(move) {
         const { row, col } = move;
-        // Check if the cell is empty
         return this.data.board[row][col] === null;
     }
     makeMove(move) {
         const { row, col } = move;
         const currentPlayerSymbol = this.currentPlayerID === this.playerIDs[0] ? "X" : "O";
-        // Check if the cell is empty before making a move
         if (this.data.board[row][col] === null) {
             this.data.board[row][col] = currentPlayerSymbol;
-            // Check if the game has ended after the move
             if (this.isGameEnded()) {
                 if (this.getWinner() === "draw") {
                     this.winnerID = "";
@@ -81,7 +73,6 @@ class TicTacToe extends game_1.InitGame {
                 }
                 this.status = "ended";
             }
-            // Switch to the next player
             this.currentPlayerID =
                 this.currentPlayerID === this.playerIDs[0]
                     ? this.playerIDs[1]

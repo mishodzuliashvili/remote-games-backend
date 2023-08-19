@@ -25,9 +25,9 @@ function getPlayer(playerID) {
 }
 exports.getPlayer = getPlayer;
 function getGameRoomPlayers(gameRoom) {
-    return gameRoom.playerIDs.map((playerID) => {
-        return players.get(playerID);
-    });
+    return (gameRoom.playerIDs.map((playerID) => {
+        return players.get(playerID) || { id: playerID, name: "Unknown" };
+    }) || []);
 }
 exports.getGameRoomPlayers = getGameRoomPlayers;
 function getPlayerGameRoom(playerID) {
